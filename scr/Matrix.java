@@ -41,7 +41,7 @@ public class Matrix {
             }
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 12; j++) {
-                System.out.printf("%.3f ", matrix[i][j]);
+                System.out.printf("%.3f\t| ", matrix[i][j]);
             }
         }
     }
