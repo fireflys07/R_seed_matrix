@@ -1,4 +1,3 @@
-import java.util.Random;
 
 public class Matrix {
     public static void main(String[] args) {
@@ -13,26 +12,20 @@ public class Matrix {
             //System.out.println(j+". "+x[j]);
         }
         double[][] matrix = new double[11][12];
-
-
         for (int i = 0; i < 11; i++)
             for (int j = 0; j < 12; j++) {
                 double valX = x[j];
-
 
                 if (w[i] == 15) {
                     matrix[i][j] = Math.exp
                             (Math.cbrt(Math.pow(0.25 / valX, 5)));
 
-
                 } else if (w[i] >= 9 && w[i] <= 13) {
                     matrix[i][j] = Math.pow(
-                            (1.0 / 4.0) * (Math.asin(1.0 / Math.pow(Math.E, Math.abs(valX))) + 3.0 / 4.0),
-                            3
-                    );
+                            (1.0 / 4.0) * (Math.asin(1.0 / Math.pow(Math.E, Math.abs(valX))) + 3.0 / 4.0), 3);
 
-
-                } else {
+                }
+                else {
                     double numerator = (1.0 / 4.0 - (Math.atan(1.0 / Math.abs(valX)) / 3.0) / 4.0);
                     double denominator = Math.pow(Math.log(Math.pow(Math.E, Math.E)),
                             Math.atan(Math.cos(Math.tan(Math.sin(valX)))));
