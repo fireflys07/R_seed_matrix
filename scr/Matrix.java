@@ -1,41 +1,78 @@
-
 public class Matrix {
     public static void main(String[] args) {
+        long[] w = buildW();
+        float[] x = buildX();
+        // Вывод массива w
+        for (int i = 0; i < w.length; i++) {
+            System.out.printf("%d ", w[i]);
+        }
+        System.out.println("\n");
+
+        // Вывод массива x
+
+        for (int j = 0; j < x.length; j++) {
+            System.out.printf("%8.3f", x[j]);
+        }
+        System.out.println("\n");
+
+        double[][] w1 = new double[w.length][x.length];
+        for (int i = 0; i < w.length; i++) {
+            for (int j = 0; j < x.length; j++) {
+                w1[i][j] = computeValue(w[i], x[j]);
+            }
+        }
+
+        printMatrix(w1);
+    }
+
+    public static long[] buildW() {
         long[] w = new long[11];
-        for (int i=0;i<w.length;i++){
-            w[i] = 6 + i;
-            //System.out.println(i+". "+w[i]);
-        }
+        for (int i = 0; i < w.length; i++) w[i] = 6 + i;
+        return w;
+
+    }
+
+    public static float[] buildX() {
         float[] x = new float[12];
-        for (int j = 0; j<x.length; j++){
-            x[j] = (float) (-13 + Math.random()*25);
-            //System.out.println(j+". "+x[j]);
+        for (int j = 0; j < x.length; j++) {
+            x[j] = (float) (-13.0 + Math.random() * 25.0);
         }
-        double[][] matrix = new double[11][12];
-        for (int i = 0; i < 11; i++)
-            for (int j = 0; j < 12; j++) {
-                double valX = x[j];
+        return x;
+    }
 
-                if (w[i] == 15) {
-                    matrix[i][j] = Math.exp
-                            (Math.cbrt(Math.pow(0.25 / valX, 5)));
+    public static double computeValue(long wi, float xj) {
+        double xv = xj;
+        // Ветка 1 если w1[i]=  15
+        // e^(cuberoot((0.25/x)^2))
+        if (wi == 15) {
+            double base = Math.pow(0.25 / xv, 2.0);
+            return Math.exp(Math.cbrt(base));
+        }
+        // Ветка 2 если w1[i] {9,10,11,12,13}
+        // Формула ((1/4) / (arcsin(1/e^{|x|}) + 3/4))^3
+        if (wi >= 9 && wi <= 13) {
+            double denom = Math.asin(1.0 / Math.exp(Math.abs(xv))) + 0.75;
+            double frac = 0.25 / denom;
+            return Math.pow(frac, 3.0);
+        }
+        // Ветка 3 для всех прочих значений
 
-                } else if (w[i] >= 9 && w[i] <= 13) {
-                    matrix[i][j] = Math.pow(
-                            (1.0 / 4.0) * (Math.asin(1.0 / Math.pow(Math.E, Math.abs(valX))) + 3.0 / 4.0), 3);
+        // a = ( ((1/3) / ( 1/4 - ( arctan(1/e^{|x|}) / 3 ) / 4 )) ^ ( ln(e^x) ) ) * arctan( cos( tan( sin(x) ) ) )
+        // Замечание: ln(e^x) = x (используем как степень)
+        double center = 0.25 - (Math.atan(1.0 / Math.exp(Math.abs(xv))) / 3.0) / 4.0;
+        double base = (1.0 / 3.0) / center;
+        double pow = Math.log(Math.exp(xv)); // = xv
+        double left = Math.pow(base, pow);
+        double right = Math.atan(Math.cos(Math.tan(Math.sin(xv))));
+        return left * right;
+    }
 
-                }
-                else {
-                    double numerator = (1.0 / 4.0 - (Math.atan(1.0 / Math.abs(valX)) / 3.0) / 4.0);
-                    double denominator = Math.pow(Math.log(Math.pow(Math.E, Math.E)),
-                            Math.atan(Math.cos(Math.tan(Math.sin(valX)))));
-                    matrix[i][j] = (1.0 / 3.0) * (numerator / denominator);
-                }
+    public static void printMatrix(double[][] w1) {
+        for (int i = 0; i < w1.length; i++) {
+            for (int j = 0; j < w1[i].length; j++) {
+                System.out.printf("|%8.3f",w1[i][j]);
             }
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 12; j++) {
-                System.out.printf("%.3f\t| ", matrix[i][j]);
-            }
+            System.out.println("|");
         }
     }
 }
