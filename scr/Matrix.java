@@ -2,18 +2,7 @@ public class Matrix {
     public static void main(String[] args) {
         long[] w = buildW();
         float[] x = buildX();
-        // Вывод массива w
-        for (int i = 0; i < w.length; i++) {
-            System.out.printf("%d ", w[i]);
-        }
-        System.out.println("\n");
-
-        // Вывод массива x
-
-        for (int j = 0; j < x.length; j++) {
-            System.out.printf("%8.3f", x[j]);
-        }
-        System.out.println("\n");
+       
 
         double[][] w1 = new double[w.length][x.length];
         for (int i = 0; i < w.length; i++) {
